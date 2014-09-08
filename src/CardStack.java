@@ -6,8 +6,8 @@ import java.util.Collections;
 public class CardStack {
 	
 	private ArrayList<Integer> Deck = new ArrayList<Integer>(52);
-	static String[] SUITS = {"Club", "Diamond", "Heart", "Spade"};
-	static String[] cardValue = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+	static String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
+	static String[] cardName = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
     public CardStack(ArrayList<Integer> d){
         Deck = d;
@@ -20,13 +20,11 @@ public class CardStack {
     public ArrayList<Integer> getDeck(){
         return Deck;
     }
-
-    //Make getters and setters
  
 	public static void main(String[] args) {
         //1 Clubs, 2 Diamonds, 3 Hearts, 4 Spades
         //Naming scheme is 101 for ace of clubs
-        //Generate the deck
+        //Generate the deck, maybe change it to generate a list of card objects?
         ArrayList<Integer> deck = new ArrayList<Integer>(52);
         for(int x = 1; x <= 4; x++){
             for(int y = 1; y <= 13; y++){
@@ -38,7 +36,10 @@ public class CardStack {
         CardStack cd = new CardStack(deck);
 
         Collections.shuffle(cd.Deck);
-        cd.printDeck(cd.Deck);
+        //cd.printDeck(cd.Deck);
+        int picked = cd.pickCard(cd.Deck);
+        Card firstCard = cd.generateCard(picked);
+        System.out.println(firstCard.getCardName() + " of " + firstCard.getCardSuit());
 				
 	}
 
@@ -47,6 +48,14 @@ public class CardStack {
         deck.remove(0);
         setDeck(deck);
         return selection;
+    }
+
+    public Card generateCard(int cV){
+        int cardVal = cV % 100;
+        String cardsuit = SUITS[(int)(cV/100)];
+        String cardname = cardName[cV % 100];
+        Card card = new Card(cardVal,cardname,cardsuit);
+        return card;
     }
 	
 	public void printDeck(ArrayList<Integer> deck){
