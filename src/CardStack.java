@@ -5,19 +5,20 @@ import java.util.Collections;
 
 public class CardStack {
 	
-	private ArrayList<Integer> Deck = new ArrayList<Integer>(52);
+	private ArrayList<Card> Deck = new ArrayList<Card>(52);
 	static String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
 	static String[] cardName = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+	private ArrayList<Card> Hand = new ArrayList<Card>();
 
-    public CardStack(ArrayList<Integer> d){
+    public CardStack(ArrayList<Card> d){
         Deck = d;
     }
 
-    public void setDeck(ArrayList<Integer> d){
+    public void setDeck(ArrayList<Card> d){
         Deck = d;
     }
 
-    public ArrayList<Integer> getDeck(){
+    public ArrayList<Card> getDeck(){
         return Deck;
     }
  
@@ -26,7 +27,8 @@ public class CardStack {
         //Naming scheme is 101 for Ace of Clubs, 413 for King of Spades
         //Generate the deck, maybe change it to generate a list of card objects?
         //
-
+		
+		//refactor to initDeck
         ArrayList<Integer> deck = new ArrayList<Integer>(52);
         for(int x = 1; x <= 4; x++){
             for(int y = 1; y <= 13; y++){
@@ -34,31 +36,21 @@ public class CardStack {
             }
         }
 
-        ArrayList<Card> DeckofCards = new ArrayList<Card>(52);
-        CardStack cd = new CardStack(deck);
+        ArrayList<Card> DeckofCards = new ArrayList<Card>();
+        CardStack cd = new CardStack(DeckofCards);
 
         for(int x = 0; x < 52; x++){
             Card c = cd.generateCard(deck.get(x));
             DeckofCards.add(c);
         }
-
-        Collections.shuffle(cd.Deck);
-        //cd.printDeck(cd.Deck);
-        //for(int i = 0; i < cd.Deck.size(); i++)
-         //   System.out.println(cd.Deck.get(i));
-        printDeck(DeckofCards);
-        //int picked = cd.pickCard(cd.Deck);
-        //Card firstCard = cd.generateCard(picked);
-        //System.out.println(firstCard.getCardName() + " of " + firstCard.getCardSuit());
+        
+        Collections.shuffle(DeckofCards);
+        
+        cd.setDeck(DeckofCards);
+        cd.drawCard(cd.Deck, 3);
+        printDeck(cd.Hand);
 				
 	}
-
-    public int pickCard(ArrayList<Integer> deck){
-        int selection = deck.get(0);
-        deck.remove(0);
-        setDeck(deck);
-        return selection;
-    }
 
     public Card generateCard(int cV){
         int cardVal = cV % 100;
@@ -74,6 +66,16 @@ public class CardStack {
 			System.out.println(deck.get(i).getCardName() + " " + deck.get(i).getCardSuit());
 	}
 	
+	public void drawCard(ArrayList<Card> d, int n){
+		for(int i = 0; i < n; i++){
+			Hand.add(d.get(0));
+			d.remove(0);
+		}
+	}
 	
+	public ArrayList<Card> shuffleDeck(ArrayList<Card> d){
+		Collections.shuffle(d);
+		return d;
+	}
 
 }
