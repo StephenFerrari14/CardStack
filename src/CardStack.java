@@ -45,11 +45,17 @@ public class CardStack {
         }
         
         Collections.shuffle(DeckofCards);
-        
         cd.setDeck(DeckofCards);
-        cd.drawCard(cd.Deck, 3);
-        printDeck(cd.Hand);
-				
+        
+        cd.drawCard(cd.Deck, 5);
+        Player player1 = new Player("Steve", cd.Hand);
+        cd.Hand = new ArrayList<Card>();
+        cd.drawCard(cd.Deck, 5);
+        Player player2 = new Player("Brett", cd.Hand);
+        
+        printDeck(player1.getHand());
+        System.out.println();
+        printDeck(player2.getHand());		
 	}
 
     public Card generateCard(int cV){
