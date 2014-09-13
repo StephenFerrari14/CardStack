@@ -55,7 +55,25 @@ public class CardStack {
         
         printDeck(player1.getHand());
         System.out.println();
-        printDeck(player2.getHand());		
+        printDeck(player2.getHand());
+        
+        int player1score = 0;
+        int player2score = 0;
+        
+        for(int i = 0; i < player1.getHand().size(); i++){
+        	if(cd.compareCards(player1.getHand().get(i), player2.getHand().get(i)))
+        		player1score++;
+        	else
+        		player2score++;
+        }
+        
+        if(player1score > player2score)
+        	System.out.println("Player 1 Wins " + player1score);
+        else if(player1score < player2score)
+        	System.out.println("Player 2 Wins" + player2score);
+        else
+        	System.out.println("Tie");
+        	
 	}
 
     public Card generateCard(int cV){
@@ -82,6 +100,16 @@ public class CardStack {
 	public ArrayList<Card> shuffleDeck(ArrayList<Card> d){
 		Collections.shuffle(d);
 		return d;
+	}
+	
+	public boolean compareCards(Card c, Card d){
+		//Compare values
+		//Return Higher? Lower? Boolean? Include different options?
+		//Needs to account for equals case
+		if(c.getCardValue() > d.getCardValue())
+			return true;
+		else
+			return false;
 	}
 
 }
