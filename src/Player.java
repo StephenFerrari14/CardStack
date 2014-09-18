@@ -2,13 +2,16 @@ import java.util.ArrayList;
 
 
 public class Player {
-	
+
+    //Name, hand, score
 	private String Name;
 	private ArrayList<Card> Hand;
+    private int Score;
 
-	public Player(String name, ArrayList<Card> hand){
+	public Player(String name, ArrayList<Card> hand, int score){
 		Name = name;
 		Hand = hand;
+        Score = score;
 	}
 	
 	public String getName(){
@@ -26,8 +29,16 @@ public class Player {
 	public void setHand(ArrayList<Card> hand){
 		Hand = hand;
 	}
-	
-	public void addToHand(Card c){
+
+    public int getScore(){
+        return Score;
+    }
+
+    public void setScore(int s){
+        Score = s;
+    }
+
+    public void addToHand(Card c){
 		Hand.add(c);
 	}
 	

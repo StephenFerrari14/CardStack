@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Table {
 
 	//Get it? Table because thats where you play card games
-
+    //Make Table the gui
 	//Table will have game type, scores, players,
 	private String gametype;
 	private int score;

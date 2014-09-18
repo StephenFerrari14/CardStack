@@ -1,107 +1,204 @@
-import java.sql.Array;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import javax.swing.*;
 
 
-public class CardStack {
-	
-	private ArrayList<Card> Deck = new ArrayList<Card>(52);
+
+public class CardStack {//extends JFrame{
+
 	static String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
 	static String[] cardName = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 	private ArrayList<Card> Hand = new ArrayList<Card>();
 
-    public CardStack(ArrayList<Card> d){
-        Deck = d;
+    //public static enum CARDTYPE {ACE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
+    //public static enum CARDSUIT {CLUBS, DIAMONDS, HEARTS, SPADES};
+
+    public CardStack(){
+        //init();
     }
 
-    public void setDeck(ArrayList<Card> d){
-        Deck = d;
+    /*
+    //Try again Later
+
+    private void init(){
+
+
+        Container pane = getContentPane();
+        GroupLayout gl = new GroupLayout(pane);
+        pane.setLayout(gl);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.setSize(100, 100);
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+
+        gl.setAutoCreateContainerGaps(true);
+
+        gl.setHorizontalGroup(gl.createSequentialGroup()
+                        .addComponent(quitButton)
+        );
+
+        gl.setVerticalGroup(gl.createSequentialGroup()
+                        .addComponent(quitButton)
+        );
+
+        pack();
+
+        setTitle("CardStack");
+        setSize(480, 320);
+        setBackground(Color.BLUE);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+    */
+
+    /*
+    private void doDrawing(Graphics g) {
+        System.out.println("DoDraw");
+        g.setColor(Color.BLUE);
+
+        Dimension size = getSize();
+        Insets insets = getInsets();
+
+        int w = size.width - insets.left - insets.right;
+        int h = size.height - insets.top - insets.bottom;
+
     }
 
-    public ArrayList<Card> getDeck(){
-        return Deck;
+    @Override
+    public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+        setBackground(Color.white);
+        doDrawing(g);
     }
- 
+    */
+
 	public static void main(String[] args) {
         //1 Clubs, 2 Diamonds, 3 Hearts, 4 Spades
         //Naming scheme is 101 for Ace of Clubs, 413 for King of Spades
         //Generate the deck, maybe change it to generate a list of card objects?
         //
-		
-		//refactor to initDeck
-        ArrayList<Integer> deck = new ArrayList<Integer>(52);
-        for(int x = 1; x <= 4; x++){
-            for(int y = 1; y <= 13; y++){
-                deck.add((x)*100 + y);
+
+        /*
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                CardStack c = new CardStack(new ArrayList<Card>());
+                c.setVisible(true);
+                BufferedImage image = null;
+                    try {
+                        image = ImageIO.read(new File("CardFace.png"));
+                    } catch (IOException ex) {
+                        // handle exception...
+                    }
+
+                JLabel cardPic = new JLabel(new ImageIcon(image));
+                c.add(cardPic);
+            }
+        });
+        */
+
+        /*
+        JFrame f = new JFrame("CardStack");
+        f.setSize(600, 600);
+        f.setBackground(Color.WHITE);
+        JPanel p = new JPanel();
+        p.setSize(200,100);
+        p.setBackground(Color.BLACK);
+        f.setLayout(new FlowLayout());
+        f.setLocationRelativeTo(null);
+        f.add(p);
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("CardFace.png"));
+        }
+        catch(IOException e){}
+        g.drawImage(img, 100,100, null);
+        Button button1 = new Button("Next");
+        f.add(button1);
+        f.pack();
+        f.setVisible(true);
+        */
+
+        /*
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                JFrame frame = new JFrame("CardStack");
+                frame.setContentPane(new Panel());
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.pack();             // "this" JFrame packs its components
+                frame.setLocationRelativeTo(null); // center the application window
+                frame.setVisible(true);            // show it
+                frame.setSize(480,320);
+                frame.setBackground(Color.BLUE);
+                Graphics g = frame.getGraphics();
+                g.drawRect(0,0,480,320);
+                g.setColor(Color.BLUE);
+            }
+        });*/
+
+        ArrayList<Card> DeckofCards = new ArrayList<Card>();
+        CardStack cd = new CardStack();
+        Deck deck = new Deck(DeckofCards);
+        deck.generateNewDeck();
+        deck.shuffle();
+
+        Player player1 = new Player("Steve", new ArrayList<Card>(), 0);
+        Player player2 = new Player("Brett", new ArrayList<Card>(), 0);
+        for(int i = 0; i < 7; i++){
+            player1.addToHand(deck.drawCard());
+            player2.addToHand(deck.drawCard());
+        }
+        
+        //printCards(player1.getHand());
+        //System.out.println();
+        //printCards(player2.getHand());
+        for(int i = 0; i < player1.getHand().size(); i++){
+        	if(cd.compareCards(player1.getHand().get(i), player2.getHand().get(i))) {
+                int s1 = player1.getScore();
+                player1.setScore(++s1);
+            }
+        	else {
+                int s2 = player2.getScore();
+                player2.setScore(++s2);
             }
         }
 
-        ArrayList<Card> DeckofCards = new ArrayList<Card>();
-        CardStack cd = new CardStack(DeckofCards);
-
-        for(int x = 0; x < 52; x++){
-            Card c = cd.generateCard(deck.get(x));
-            DeckofCards.add(c);
-        }
-        
-        Collections.shuffle(DeckofCards);
-        cd.setDeck(DeckofCards);
-        
-        cd.drawCard(cd.Deck, 5);
-        Player player1 = new Player("Steve", cd.Hand);
-        cd.Hand = new ArrayList<Card>();
-        cd.drawCard(cd.Deck, 5);
-        Player player2 = new Player("Brett", cd.Hand);
-        
-        printDeck(player1.getHand());
+        /*
+        printCards(player1.getHand());
         System.out.println();
-        printDeck(player2.getHand());
-        
-        int player1score = 0;
-        int player2score = 0;
-        
-        for(int i = 0; i < player1.getHand().size(); i++){
-        	if(cd.compareCards(player1.getHand().get(i), player2.getHand().get(i)))
-        		player1score++;
-        	else
-        		player2score++;
-        }
-        
-        if(player1score > player2score)
-        	System.out.println("Player 1 Wins " + player1score);
-        else if(player1score < player2score)
-        	System.out.println("Player 2 Wins" + player2score);
+        printCards(player2.getHand());
+        System.out.println(player1.getScore());
+        System.out.println(player2.getScore());
+        */
+
+        if(player1.getScore() > player2.getScore())
+        	System.out.println(player1.getName() + " Wins with " + player1.getScore() + " points");
+        else if(player1.getScore() < player2.getScore())
+        	System.out.println(player2.getName() + " Wins with " + player2.getScore() + " points");
         else
         	System.out.println("Tie");
         	
 	}
 
-    public Card generateCard(int cV){
-        int cardVal = cV % 100;
-        String cardsuit = SUITS[((int)(cV/100))-1];
-        String cardname = cardName[(cV % 100)-1];
-        Card card = new Card(cardVal,cardname,cardsuit);
-        return card;
-    }
+
 	
-	public static void printDeck(ArrayList<Card> deck){
+	public static void printCards(ArrayList<Card> cards){
 		//Print out deck
-		for(int i = 0; i < deck.size(); i++)
-			System.out.println(deck.get(i).getCardName() + " " + deck.get(i).getCardSuit());
+		for(int i = 0; i < cards.size(); i++)
+			System.out.println(cards.get(i).getCardName() + " " + cards.get(i).getCardSuit());
 	}
-	
-	public void drawCard(ArrayList<Card> d, int n){
-		for(int i = 0; i < n; i++){
-			Hand.add(d.get(0));
-			d.remove(0);
-		}
-	}
-	
-	public ArrayList<Card> shuffleDeck(ArrayList<Card> d){
-		Collections.shuffle(d);
-		return d;
-	}
-	
+
 	public boolean compareCards(Card c, Card d){
 		//Compare values
 		//Return Higher? Lower? Boolean? Include different options?

@@ -6,6 +6,9 @@ public class Card {
     private int cardValue;
     private String cardSuit;
     private String cardName;
+    public static enum CARDTYPE {ACE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
+    public static enum CARDSUIT {CLUBS, DIAMONDS, HEARTS, SPADES};
+
 
     public Card(int cV, String cN, String cS){
         cardValue = cV;
