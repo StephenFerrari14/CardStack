@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -10,13 +9,6 @@ import javax.swing.*;
 
 
 public class CardStack {//extends JFrame{
-
-	static String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
-	static String[] cardName = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
-	private ArrayList<Card> Hand = new ArrayList<Card>();
-
-    //public static enum CARDTYPE {ACE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
-    //public static enum CARDSUIT {CLUBS, DIAMONDS, HEARTS, SPADES};
 
     public CardStack(){
         //init();
@@ -147,66 +139,9 @@ public class CardStack {//extends JFrame{
             }
         });*/
 
-        ArrayList<Card> DeckofCards = new ArrayList<Card>();
-        CardStack cd = new CardStack();
-        Deck deck = new Deck(DeckofCards);
-        deck.generateNewDeck();
-        deck.shuffle();
-
-        Player player1 = new Player("Steve", new ArrayList<Card>(), 0);
-        Player player2 = new Player("Brett", new ArrayList<Card>(), 0);
-        for(int i = 0; i < 7; i++){
-            player1.addToHand(deck.drawCard());
-            player2.addToHand(deck.drawCard());
-        }
-        
-        //printCards(player1.getHand());
-        //System.out.println();
-        //printCards(player2.getHand());
-        for(int i = 0; i < player1.getHand().size(); i++){
-        	if(cd.compareCards(player1.getHand().get(i), player2.getHand().get(i))) {
-                int s1 = player1.getScore();
-                player1.setScore(++s1);
-            }
-        	else {
-                int s2 = player2.getScore();
-                player2.setScore(++s2);
-            }
-        }
-
-        /*
-        printCards(player1.getHand());
-        System.out.println();
-        printCards(player2.getHand());
-        System.out.println(player1.getScore());
-        System.out.println(player2.getScore());
-        */
-
-        if(player1.getScore() > player2.getScore())
-        	System.out.println(player1.getName() + " Wins with " + player1.getScore() + " points");
-        else if(player1.getScore() < player2.getScore())
-        	System.out.println(player2.getName() + " Wins with " + player2.getScore() + " points");
-        else
-        	System.out.println("Tie");
+        Table kitchenTable = new Table();
+        kitchenTable.start();
         	
-	}
-
-
-	
-	public static void printCards(ArrayList<Card> cards){
-		//Print out deck
-		for(int i = 0; i < cards.size(); i++)
-			System.out.println(cards.get(i).getCardName() + " " + cards.get(i).getCardSuit());
-	}
-
-	public boolean compareCards(Card c, Card d){
-		//Compare values
-		//Return Higher? Lower? Boolean? Include different options?
-		//Needs to account for equals case
-		if(c.getCardValue() > d.getCardValue())
-			return true;
-		else
-			return false;
 	}
 
 }
