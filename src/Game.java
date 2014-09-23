@@ -72,29 +72,54 @@ public class Game implements GameMode{
 
         //    }
         //}
-        //Implement Face card rule or else its infinite
-        while(warpile1.size() > 0 || warpile2.size() > 0){
+        //Implement duel rule or else its infinite
+        //System.out.println("P1: " + warpile1.size() + " P2: " + warpile2.size());
+        while(warpile1.size() > 0 && warpile2.size() > 0){
             if(warpile1.peek().getCardValue() > warpile2.peek().getCardValue()){
-                    //Player one wins
+                //Player one wins
                 Card temp = warpile2.poll();
                 warpile1.push(temp);
                 warpile1.add(warpile1.poll());
-            }else if(warpile1.peek().getCardValue() > warpile2.peek().getCardValue()){
-                    //Player 2 wins
-                Card temp = warpile1.poll();
-                warpile2.push(temp);
-                warpile2.add(warpile2.poll());
             }else {
-                //Tie
-                warpile1.add(warpile1.poll());
-                warpile2.add(warpile2.poll());
+                if (warpile1.peek().getCardValue() < warpile2.peek().getCardValue()) {
+                    //Player 2 wins
+                    Card temp = warpile1.poll();
+                    warpile2.push(temp);
+                    warpile2.add(warpile2.poll());
+                } else {
+                    //Tie, do duel
+                    //remove first card of each pile, add next 3 from each deck to the duel pile, check first card
+                    //Have to account for a deck having less than 4 cards and when to stop the while loop
+                    ArrayList<Card> duelPile = new ArrayList<Card>();
+                    int winner = 0;
+                    int d = 4;
+                    if(warpile1.size() - 1 < d)
+                        d = warpile1.size() - 1;
+                    if(warpile2.size() - 1 < d)
+                        d = warpile2.size() - 1;
+
+                    while (warpile1.peek().getCardValue() == warpile2.peek().getCardValue()) {
+                        for(int i = 0; i < d; i++) {
+                            duelPile.add(warpile1.poll());
+                            duelPile.add(warpile2.poll());
+                        }
+                        if (warpile1.peek().getCardValue() > warpile2.peek().getCardValue())
+                            winner = 1; //p1 wins
+                        if (warpile1.peek().getCardValue() < warpile2.peek().getCardValue())
+                            winner = 2; //p2 wins
+                    }
+                    if (winner == 1)
+                        warpile1.addAll(duelPile);
+                    if (winner == 2)
+                        warpile2.addAll(duelPile);
+                }
             }
         }
 
         if(warpile1.size() > 0)
-            System.out.println(player1.getName() + "Wins");
+            System.out.println(player1.getName() + " Wins");
         else
-            System.out.println(player2.getName() + "Wins");
+            System.out.println(player2.getName() + " Wins");
 
         /*for(int i = 0; i < player1.getHand().size(); i++){
             if(compareCards(player1.getHand().get(i), player2.getHand().get(i))) {
