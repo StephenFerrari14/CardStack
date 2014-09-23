@@ -9,8 +9,9 @@ public class Game implements GameMode{
     //Game with game things
     //Make game objects
     //Players, Rules/mode?, Goal?, Run?
+	//Rename this to War implements Game
     private int score;
-    private ArrayList<Player> playerList;
+    private ArrayList<Player> playerList = new ArrayList<Player>();
     private String gameName;
 
     public Game(String gameName){
@@ -50,29 +51,23 @@ public class Game implements GameMode{
         deck.generateNewDeck();
         deck.shuffle();
 
-        Player player1 = new Player("Steve", new ArrayList<Card>(52), 0);
-        Player player2 = new Player("Brett", new ArrayList<Card>(52), 0);
+       
         int decksize = deck.getDeck().size();
         for(int i = 0; i < decksize/2; i++){
-            player1.addToHand(deck.drawCard());
-            player2.addToHand(deck.drawCard());
+        	for(Player p : playerList){
+        		p.addToHand(deck.drawCard());
+        	}
         }
 
         //For war I should implement a linked list instead
         LinkedList<Card> warpile1 = new LinkedList<Card>();
         LinkedList<Card> warpile2 = new LinkedList<Card>();
-        int handsize = player1.getHand().size();
+        int handsize = playerList.get(0).getHand().size();
         for(int i = 0; i < handsize; i++){
-            warpile1.add(player1.getHand().get(i));
-            warpile2.add(player2.getHand().get(i));
+            warpile1.add(playerList.get(0).getHand().get(i));
+            warpile2.add(playerList.get(1).getHand().get(i));
         }
 
-        //for(int j = 0; j < player1.getHand().size(); j++){
-        //    if(compareCards(player1.getHand().get(j), player2.getHand().get(j))){
-
-        //    }
-        //}
-        //Implement duel rule or else its infinite
         //System.out.println("P1: " + warpile1.size() + " P2: " + warpile2.size());
         while(warpile1.size() > 0 && warpile2.size() > 0){
             if(warpile1.peek().getCardValue() > warpile2.peek().getCardValue()){
@@ -117,9 +112,9 @@ public class Game implements GameMode{
         }
 
         if(warpile1.size() > 0)
-            System.out.println(player1.getName() + " Wins");
+            System.out.println(playerList.get(0).getName() + " Wins");
         else
-            System.out.println(player2.getName() + " Wins");
+            System.out.println(playerList.get(1).getName() + " Wins");
 
         /*for(int i = 0; i < player1.getHand().size(); i++){
             if(compareCards(player1.getHand().get(i), player2.getHand().get(i))) {
@@ -147,14 +142,13 @@ public class Game implements GameMode{
             System.out.println(cards.get(i).getCardName() + " of " + cards.get(i).getCardSuit());
     }
 
-    public boolean compareCards(Card c, Card d){
-        //Compare values
-        //Return Higher? Lower? Boolean? Include different options?
-        //Needs to account for equals case
+    public int compareCards(Card c, Card d){
+    	//forgot about this, use it
         if(c.getCardValue() > d.getCardValue())
-            return true;
-        else
-            return false;
+            return 1;
+        if(c.getCardValue() < d.getCardValue())
+            return -1;
+        return 0;
     }
 
 }

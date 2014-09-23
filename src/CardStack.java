@@ -8,10 +8,67 @@ import javax.swing.*;
 
 
 
-public class CardStack {//extends JFrame{
+public class CardStack extends JFrame{
 
     public CardStack(){
-        //init();
+        init(); 
+    }
+    
+    private void init() {
+
+    	JMenuBar menubar = new JMenuBar();
+        ImageIcon icon = new ImageIcon("exit.png");
+
+        JMenu file = new JMenu("File");
+        file.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem eMenuItem = new JMenuItem("Exit", icon);
+        eMenuItem.setMnemonic(KeyEvent.VK_E);
+        eMenuItem.setToolTipText("Exit application");
+        eMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+
+        file.add(eMenuItem);
+
+        menubar.add(file);
+
+        setJMenuBar(menubar);
+        
+        JPanel basic = new JPanel();
+        basic.setLayout(new BoxLayout(basic, BoxLayout.Y_AXIS));
+        add(basic);
+
+        basic.add(Box.createVerticalGlue());
+
+        JPanel bottom = new JPanel();
+        bottom.setAlignmentX(1f);
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
+
+        JButton ok = new JButton("OK");
+        JButton close = new JButton("Close");
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+
+        bottom.add(ok);
+        bottom.add(Box.createRigidArea(new Dimension(5, 0)));
+        bottom.add(close);
+        bottom.add(Box.createRigidArea(new Dimension(15, 0)));
+
+        basic.add(bottom);
+        basic.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        setTitle("CardStack");
+        setSize(480, 320);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     /*
@@ -81,24 +138,15 @@ public class CardStack {//extends JFrame{
         //Generate the deck, maybe change it to generate a list of card objects?
         //
 
-        /*
+        
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                CardStack c = new CardStack(new ArrayList<Card>());
-                c.setVisible(true);
-                BufferedImage image = null;
-                    try {
-                        image = ImageIO.read(new File("CardFace.png"));
-                    } catch (IOException ex) {
-                        // handle exception...
-                    }
-
-                JLabel cardPic = new JLabel(new ImageIcon(image));
-                c.add(cardPic);
+            	CardStack ex = new CardStack();
+                ex.setVisible(true);
             }
         });
-        */
+        
 
         /*
         JFrame f = new JFrame("CardStack");
