@@ -6,7 +6,46 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.swing.*;
 
+class DrawPanel extends JPanel {
 
+    Image imgFace;
+    Image imgBack;
+    int height = 320;
+    int width = 480;
+
+    public DrawPanel() {
+        
+        loadImage();
+        Dimension dm = new Dimension(imgFace.getWidth(null), imgFace.getHeight(null));
+        setPreferredSize(dm);
+    }
+    
+    private void loadImage() {
+        imgFace = new ImageIcon("CardFace.png").getImage();
+        imgBack = new ImageIcon("CardBack.png").getImage();
+        //imgFace = imgFace.getScaledInstance((int)(imgFace.getWidth(null)*1.5), (int)(imgFace.getHeight(null)*1.5), 1);
+        imgBack = imgBack.getScaledInstance(imgBack.getWidth(null)*2, imgBack.getHeight(null)*2, 1);
+        
+    }
+
+    private void doDrawing(Graphics g) {
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.drawImage(imgFace, width/2 - imgFace.getWidth(null), height/2 - imgFace.getHeight(null) , null);
+        g2d.drawImage(imgFace, width/2 + imgFace.getWidth(null), height/2 - imgFace.getHeight(null) , null);
+        g2d.drawImage(imgBack, imgBack.getWidth(null), height/2 - imgBack.getHeight(null) , null);
+        g2d.drawImage(imgBack, width - imgBack.getWidth(null), height/2 - imgBack.getHeight(null) , null);
+        
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+        doDrawing(g);
+    }
+}
 
 public class CardStack extends JFrame{
 
@@ -56,7 +95,7 @@ public class CardStack extends JFrame{
                 System.exit(0);
             }
         });
-
+        
         bottom.add(ok);
         bottom.add(Box.createRigidArea(new Dimension(5, 0)));
         bottom.add(close);
@@ -64,7 +103,21 @@ public class CardStack extends JFrame{
 
         basic.add(bottom);
         basic.add(Box.createRigidArea(new Dimension(0, 15)));
-
+        
+        pack();
+        
+        DrawPanel dpnl = new DrawPanel();
+        add(dpnl);
+        
+        /*
+        JLabel label1 = new JLabel("4 of Diamonds", JLabel.CENTER);
+        label1.setHorizontalTextPosition(JLabel.LEFT);
+        label1.setVerticalTextPosition(JLabel.BOTTOM);
+        add(label1);
+        */
+        
+        pack();
+        
         setTitle("CardStack");
         setSize(480, 320);
         setLocationRelativeTo(null);
