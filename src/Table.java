@@ -8,9 +8,10 @@ public class Table {
     //Make Table the gui maybe
 
     Scanner console = new Scanner(System.in);
-	
-	public Table(){
+	TableController tc;
 
+	public Table(){
+        tc = new TableController();
 	}
 
     public void start(){
@@ -18,6 +19,7 @@ public class Table {
                 + "     Card Stack      \n"
                 + "*********************");
         startMenu();
+        tc.start();
     }
 
     public void startMenu(){
